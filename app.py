@@ -7,7 +7,8 @@ def MidSongLink(id):
     wunder = get("https://api.themoviedb.org/3/movie/"+id+"?api_key=ed0646253701d7550481764a488b6ded", timeout=10)
     open("json/"+id+'.json', 'wb').write(wunder.content)
 
-song_id = [str(i) for i in range(sys.argv[1], sys.argv[1]*1000)]
+a = int(sys.argv[1])
+song_id = [str(i) for i in range(a, a*100)]
 
 p = Pool(50)
 num_tasks = len(song_id)

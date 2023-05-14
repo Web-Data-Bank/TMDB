@@ -1,10 +1,8 @@
-python3 main.py
-for (( i = 0; i < 50000; i = i + 1000))
+for (( i = 0; i < 50000; i = i + 250))
 do 
-    echo $FILE
+    echo $i
     python3 app.py "$i"
     git add -A --verbose
     git commit -m "$i"
     git push
-    rm $FILE
 done

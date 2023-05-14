@@ -8,7 +8,7 @@ def MidSongLink(id):
     open("json/"+id+'.json', 'wb').write(wunder.content)
 
 a = int(sys.argv[1])
-song_id = [str(i) for i in range(a, a+250)]
+song_id = [str(i) for i in range(a, a+1000)]
 
 p = Pool(50)
 num_tasks = len(song_id)

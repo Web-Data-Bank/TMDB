@@ -1,4 +1,4 @@
-for (( i = 0; i < 50000; i = i + 250))
+for (( i = 50000; i < 100000; i = i + 1000))
 do 
     echo $i
     python3 app.py "$i"

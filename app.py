@@ -3,6 +3,7 @@ from multiprocessing import Pool
 from requests import get
 import sys
 
+
 def MidSongLink(id):
     url = "https://api.themoviedb.org/3/movie/" + id + "?api_key=ed0646253701d7550481764a488b6ded"
     with get(url, timeout=10) as response:
@@ -12,9 +13,9 @@ def MidSongLink(id):
 
 def main():
     a = int(sys.argv[1])
-    song_id = [str(i) for i in range(a, a+250)]
+    song_id = [str(i) for i in range(a, a+1000)]
 
-    pool_size = 100  # Adjust the pool size as per system capabilities
+    pool_size = 250  # Adjust the pool size as per system capabilities
     num_tasks = len(song_id)
     print(num_tasks)
 

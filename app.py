@@ -12,7 +12,7 @@ def MidSongLink(id):
 
 def main():
     a = int(sys.argv[1])
-    song_id = [str(i) for i in range(a, a + 250)]
+    song_id = [str(i) for i in range(a, a + 500)]
 
     num_tasks = len(song_id)
     print(num_tasks)

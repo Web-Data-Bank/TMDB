@@ -1,4 +1,4 @@
-for (( i = 129500; i < 129750; i++))
+for (( i = 129750; i < 130000; i++))
 do 
     rm json/$i.json
     # echo $i

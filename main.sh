@@ -1,4 +1,5 @@
-for (( i = 0; i < 50000; i = i + 250))
+git config --global pack.threads "8"
+for (( i = 450000; i < 500000; i = i + 1000))
 do 
     echo $i
     python3 app.py "$i"

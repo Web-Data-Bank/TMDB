@@ -1,4 +1,4 @@
-# Multi-Language Movie Details
+# TMDB - The Movie Database - Movie Details
 This repository contains a collection of movie details in multiple languages, provided in JSON format. It aims to provide a comprehensive dataset of movie information, including titles, genres, release dates, languages, and more.
 
 ## Dataset

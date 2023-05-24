@@ -22,7 +22,7 @@ def delete_files_with_content_parallel(directory_path, content):
     pool = multiprocessing.Pool()
 
     # Iterate over the range of file names
-    for file_name in range(5, 50000):
+    for file_name in range(50000, 100000):
         file_path = os.path.join(directory_path, f"{file_name}.json")
 
         # Apply the function asynchronously to each file using the multiprocessing pool

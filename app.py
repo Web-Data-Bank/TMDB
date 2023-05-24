@@ -12,12 +12,12 @@ def MidSongLink(id):
 
 def main():
     a = int(sys.argv[1])
-    song_id = [str(i) for i in range(a, a + 250)]
+    song_id = [str(i) for i in range(a, a + 5000)]
 
     num_tasks = len(song_id)
     print(num_tasks)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=75) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=250) as executor:
         futures = [executor.submit(MidSongLink, id) for id in song_id]
         for i, _ in enumerate(concurrent.futures.as_completed(futures), 1):
             sys.stderr.write('\rdone {0:%}'.format(i/num_tasks))

@@ -13,8 +13,6 @@ def delete_files_with_content(file_path, content):
             # Delete the file
             os.remove(file_path)
             print(f"File '{file_path}' deleted.")
-        else:
-            print(f"File '{file_path}' does not match the specified content.")
     else:
         print(f"File '{file_path}' does not exist.")
 
@@ -24,7 +22,7 @@ def delete_files_with_content_parallel(directory_path, content):
     pool = multiprocessing.Pool()
 
     # Iterate over the range of file names
-    for file_name in range(1131088):
+    for file_name in range(5, 50000):
         file_path = os.path.join(directory_path, f"{file_name}.json")
 
         # Apply the function asynchronously to each file using the multiprocessing pool

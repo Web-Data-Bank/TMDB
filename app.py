@@ -19,8 +19,9 @@ def main():
     num_tasks = len(song_id)
     print(num_tasks)
 
-    with Pool(pool_size) as p:
-        for i, _ in enumerate(p.imap_unordered(MidSongLink, song_id), 1):
+    with concurrent.futures.ThreadPoolExecutor(max_workers=250) as executor:
+        futures = [executor.submit(MidSongLink, id) for id in song_id]
+        for i, _ in enumerate(concurrent.futures.as_completed(futures), 1):
             sys.stderr.write('\rdone {0:%}'.format(i/num_tasks))
 
 if __name__ == "__main__":

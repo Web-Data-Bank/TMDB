@@ -2,7 +2,7 @@ from __future__ import division
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from multiprocessing import Pool
 from requests import get
-import sys
+import sys, os
 
 def Download_API(id):
     if not os.path.exists("alternative_titles/" + id + ".json"):

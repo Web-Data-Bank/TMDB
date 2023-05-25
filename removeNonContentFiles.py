@@ -21,10 +21,10 @@ def delete_files_with_content_parallel(directory_path, content):
     # equal to the number of available CPU cores
     pool = multiprocessing.Pool()
 
-    a = int(sys.argv[1])
+    # a = int(sys.argv[1])
 
     # Iterate over the range of file names
-    for file_name in range(900000, 1200000):
+    for file_name in range(900000, 920000):
         file_path = os.path.join(directory_path, f"{file_name}.json")
 
         # Apply the function asynchronously to each file using the multiprocessing pool
@@ -35,7 +35,7 @@ def delete_files_with_content_parallel(directory_path, content):
     pool.join()
 
 # Specify the directory path and the content to match
-directory_path = 'json/'
+directory_path = 'movie/'
 content_to_match = '{"success":false,"status_code":34,"status_message":"The resource you requested could not be found."}'
 
 # Call the function to delete the files in the range with matching content using parallel processing

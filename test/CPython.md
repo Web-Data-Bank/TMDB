@@ -1,38 +1,44 @@
-<p>To optimize the provided Python code by leveraging C/C++ extensions, you can use the <code>Cython</code> library. Cython allows you to write Python code that gets compiled to C, resulting in improved performance. Here's an example of how you can use Cython to optimize the given code:</p><ol><li><p>First, install the Cython library if you haven't already. You can use pip to install it:</p><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>bash</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">pip install cython
-</code></div></div></pre></li><li><p>Create a new file called <code>download_api.pyx</code> with the following content:</p><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>cython</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-cython"># cython: language_level=3
-import os
-from requests import get
+To optimize the provided Python code by leveraging C/C++ extensions, you can use the `Cython` library. Cython allows you to write Python code that gets compiled to C, resulting in improved performance. Here's an example of how you can use Cython to optimize the given code:
 
-def Download_API(str id):
-    if not os.path.exists("alternative_titles/" + id + ".json"):
-        url = "https://api.themoviedb.org/3/movie/" + id + "/alternative_titles?api_key=ed0646253701d7550481764a488b6ded"
-        with get(url, timeout=10) as response:
-            content = response.content
-            with open("alternative_titles/" + id + ".json", "wb") as file:
-                file.write(content)
-</code></div></div></pre></li><li><p>Create a new file called <code>main.py</code> with the following content:</p><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python"><span class="hljs-keyword">from</span> __future__ <span class="hljs-keyword">import</span> division
-<span class="hljs-keyword">from</span> concurrent.futures <span class="hljs-keyword">import</span> ThreadPoolExecutor, as_completed
-<span class="hljs-keyword">import</span> sys
-<span class="hljs-keyword">from</span> download_api <span class="hljs-keyword">import</span> Download_API
+1.  First, install the Cython library if you haven't already. You can use pip to install it:
+    
+    bashCopy code
+    
+    `pip install cython`
+    
+2.  Create a new file called `download_api.pyx` with the following content:
+    
+    cythonCopy code
+    
+    `# cython: language_level=3 import os from requests import get  def Download_API(str id):     if not os.path.exists("alternative_titles/" + id + ".json"):         url = "https://api.themoviedb.org/3/movie/" + id + "/alternative_titles?api_key=ed0646253701d7550481764a488b6ded"         with get(url, timeout=10) as response:             content = response.content             with open("alternative_titles/" + id + ".json", "wb") as file:                 file.write(content)`
+    
+3.  Create a new file called `main.py` with the following content:
+    
+    pythonCopy code
+    
+    `from __future__ import division from concurrent.futures import ThreadPoolExecutor, as_completed import sys from download_api import Download_API  file_path = 'file_names.txt'  with open(file_path, 'r') as file:     movies_id = [line.strip() for line in file]  num_tasks = len(movies_id) print(num_tasks)  with ThreadPoolExecutor(max_workers=250) as executor:     futures = [executor.submit(Download_API, id) for id in movies_id]     for i, _ in enumerate(as_completed(futures), 1):         sys.stderr.write('\rdone {0:%}'.format(i/num_tasks))`
+    
+4.  Create a new file called `setup.py` with the following content:
+    
+    pythonCopy code
+    
+    `from setuptools import setup from Cython.Build import cythonize  setup(     ext_modules=cythonize("download_api.pyx") )`
+    
+5.  Open the terminal and navigate to the directory containing these three files. Then, run the following command to build the Cython extension:
+    
+    bashCopy code
+    
+    `python setup.py build_ext --inplace`
+    
+    This will generate a compiled C file (`download_api.c`) and a shared library file (e.g., `download_api.so` on Linux) from the Cython code.
+    
+6.  Finally, run the program using the following command:
+    
+    bashCopy code
+    
+    `python main.py`
+    
+    The program will execute with improved performance due to the utilization of the compiled Cython extension.
+    
 
-file_path = <span class="hljs-string">'file_names.txt'</span>
-
-<span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_path, <span class="hljs-string">'r'</span>) <span class="hljs-keyword">as</span> file:
-    movies_id = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> file]
-
-num_tasks = <span class="hljs-built_in">len</span>(movies_id)
-<span class="hljs-built_in">print</span>(num_tasks)
-
-<span class="hljs-keyword">with</span> ThreadPoolExecutor(max_workers=<span class="hljs-number">250</span>) <span class="hljs-keyword">as</span> executor:
-    futures = [executor.submit(Download_API, <span class="hljs-built_in">id</span>) <span class="hljs-keyword">for</span> <span class="hljs-built_in">id</span> <span class="hljs-keyword">in</span> movies_id]
-    <span class="hljs-keyword">for</span> i, _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(as_completed(futures), <span class="hljs-number">1</span>):
-        sys.stderr.write(<span class="hljs-string">'\rdone {0:%}'</span>.<span class="hljs-built_in">format</span>(i/num_tasks))
-</code></div></div></pre></li><li><p>Create a new file called <code>setup.py</code> with the following content:</p><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python"><span class="hljs-keyword">from</span> setuptools <span class="hljs-keyword">import</span> setup
-<span class="hljs-keyword">from</span> Cython.Build <span class="hljs-keyword">import</span> cythonize
-
-setup(
-    ext_modules=cythonize(<span class="hljs-string">"download_api.pyx"</span>)
-)
-</code></div></div></pre></li><li><p>Open the terminal and navigate to the directory containing these three files. Then, run the following command to build the Cython extension:</p><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>bash</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">python setup.py build_ext --inplace
-</code></div></div></pre><p>This will generate a compiled C file (<code>download_api.c</code>) and a shared library file (e.g., <code>download_api.so</code> on Linux) from the Cython code.</p></li><li><p>Finally, run the program using the following command:</p><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>bash</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">python main.py
-</code></div></div></pre><p>The program will execute with improved performance due to the utilization of the compiled Cython extension.</p></li></ol><p>By leveraging Cython to compile critical sections of the code, you can achieve performance improvements closer to that of C/C++ while still benefiting from the high-level productivity and ease of use of Python.</p>
+By leveraging Cython to compile critical sections of the code, you can achieve performance improvements closer to that of C/C++ while still benefiting from the high-level productivity and ease of use of Python.

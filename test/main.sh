@@ -1,5 +1,5 @@
 git config --global pack.threads "8"
-for (( i = 188; i >= 50; i--))
+for (( i = 187; i >= 100; i--))
 do 
     # rm json/$i.json
     echo $i

@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import sys
 from download_api import Download_API
 
-file_path = '../file_names.txt'
+file_path = "../movie_id/"+sys.argv[1]+".text"#'file_names.txt''../file_names.txt'
 
 with open(file_path, 'r') as file:
     movies_id = [line.strip() for line in file]

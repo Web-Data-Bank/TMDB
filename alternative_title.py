@@ -22,10 +22,17 @@ with open(file_path, 'r') as file:
     movies_id = [line.strip() for line in file]
 
 
-num_tasks = len(movies_id)
-print(num_tasks)
+movies_id.sort()
+#print(movies_id)
+for i in range(int(len(movies_id)/5000)):
+    with open("movie_id/"+str(i)+".text", "w") as f:
+        for item in movies_id[i*5000:(i+1)*5000]:
+            f.write(item + "\n")
 
-with ThreadPoolExecutor(max_workers=250) as executor:
-    futures = [executor.submit(Download_API, id) for id in movies_id]
-    for i, _ in enumerate(as_completed(futures), 1):
-        sys.stderr.write('\rdone {0:%}'.format(i/num_tasks))
+# num_tasks = len(movies_id)
+# print(num_tasks)
+
+# with ThreadPoolExecutor(max_workers=250) as executor:
+#     futures = [executor.submit(Download_API, id) for id in movies_id]
+#     for i, _ in enumerate(as_completed(futures), 1):
+#         sys.stderr.write('\rdone {0:%}'.format(i/num_tasks))

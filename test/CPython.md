@@ -59,7 +59,7 @@ To optimize the provided Python code by leveraging C/C++ extensions, you can use
 5.  Open the terminal and navigate to the directory containing these three files. Then, run the following command to build the Cython extension:
 
     ```bash
-    python setup.py build_ext --inplace
+    python3 setup.py build_ext --inplace
     ```
     This will generate a compiled C file (`download_api.c`) and a shared library file (e.g., `download_api.so` on Linux) from the Cython code.
     
